@@ -19,13 +19,12 @@ pipeline {
 
        stage('Deployment') {
          steps {
-           withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                echo 'Deploying to Dockerhub'
-                sh 'docker tag -t emmy-coming-soon1:${BUILD_NUMBER} hnorinewehpon/emmy-coming-soon1:${BUILD_NUMBER}'
-                sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-                sh 'docker push hnorinewehpon/emmy-coming-soon1:${BUILD_NUMBER}'
-           }
-         }
+        echo 'Deploying to Dockerhub'
+        sh 'docker tag emmy-coming-soon1:${BUILD_NUMBER} yourdockerhubusername/emmy-coming-soon1:${BUILD_NUMBER}'
+        sh 'docker push yourdockerhubusername/emmy-coming-soon1:${BUILD_NUMBER}'
+        }
+      }
+
        }
    }
 }
