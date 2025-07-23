@@ -6,7 +6,6 @@ pipeline {
     }
 
     environment {
-
         CI = false
     }
     
@@ -16,15 +15,14 @@ pipeline {
                 echo 'Installing Dependencies and Building'
                 sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
             }
-        }
+     }
 
-        stage('Deployment') {
+           stage('Deployment') {
             steps {
                 echo 'Deploying to Dockerhub'
                 sh 'docker tag -t emmy-coming-soon1:${BUILD_NUMBER} hnorinewehpon/emmy-coming-soon1-1'
                 sh 'docker login -u ${USERNAME} -p ${PASSWORD} docker.io'
                 sh 'docker push hnorinewehpon/emmy-coming-soon1-1'
-        
                 }
             }
         }
