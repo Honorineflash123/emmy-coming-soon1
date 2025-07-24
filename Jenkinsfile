@@ -13,7 +13,7 @@ pipeline {
       stage('Build') {
         steps {
                 echo 'Installing Dependencies and Building'
-                sh 'docker build -t emmy-coming-soon1:${IMAGE_NAME}:${BUILD_NUMBER} .'
+                sh 'docker build -t emmy-coming-soon1:${emmy-coming-soon}:${BUILD_NUMBER} .'
          }
     }
 
