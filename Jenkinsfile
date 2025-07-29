@@ -25,7 +25,7 @@ pipeline {
            
             }
         
-            
+        }
         
         stage('Deployment') {
             steps {
@@ -34,6 +34,6 @@ pipeline {
                 sh 'docker push hnorinewehpon/emmy-coming-soon1:${IMAGE_ENV}-${BUILD_NUMBER}'
             }
         }
-      }
+      
     }
 }
