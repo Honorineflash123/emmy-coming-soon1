@@ -1,39 +1,37 @@
 pipeline {
     agent any
-
-    triggers {
-        pollSCM('* * * * *')
-    }
-
-    environment {
-        CI = false
-        IMAGE_ENV = "dev"   // change to "prod" or "test" if needed
-    }
     
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Installing Dependencies and Building'
-                sh 'docker build -t emmy-coming-soon1:${IMAGE_ENV}-${BUILD_NUMBER} .'
-            }
-        }
-        stage('Login to Docker Hub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                   }
-           
-            }
-        
-        }
-        
-        stage('Deployment') {
-            steps {
-                echo 'Deploying to Dockerhub'
-                sh 'docker tag emmy-coming-soon1:${IMAGE_ENV}-${BUILD_NUMBER} hnorinewehpon/emmy-coming-soon1:${IMAGE_ENV}-${BUILD_NUMBER}'
-                sh 'docker push hnorinewehpon/emmy-coming-soon1:${IMAGE_ENV}-${BUILD_NUMBER}'
-            }
-        }
-      
+    triggers {
+         pollSCM '* * * * *'
     }
+    environment {
+        CI = false          // do not treat warnings as errors
+    }
+    stages {
+        stage('Run SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-jenkins-token', variable: 'SONARQUBE')]) {
+                    sh '''
+                        sonar-scanner \
+                          -Dsonar.projectKey=qr-momo-code-analysis \
+                          -Dsonar.sources=. \
+                          -Dsonar.host.url=http://sonarqube:9000 \
+                          -Dsonar.login=$SONARQUBE
+                    '''
+                }   
+            }
+        }
+        
+        stage('Dockerizing') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'docker login -u $USERNAME -p $PASSWORD'
+    // Your Docker commands using the environment variables
+                    sh 'docker build -t qrmomojenk:v2 .'
+                    sh 'docker tag qrmomojenk:v2 mwene/qrmomojenk:v2'
+                    sh 'docker push mwene/qrmomojenk:v2'
+                }
+            } 
+        }         
+    }    
 }
