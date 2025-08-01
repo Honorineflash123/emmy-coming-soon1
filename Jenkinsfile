@@ -29,7 +29,7 @@ pipeline {
     // Your Docker commands using the environment variables
                     sh 'docker build -t emmy-coming-soon1jenk:v2.'
                     sh 'docker tag emmy-coming-soon1jenk:v2 hnorinewehpon/emmy-coming-soon1jenk:v2'
-                    sh 'docker push mwene/emmy-coming-soon1jenk:v2'
+                    sh 'docker push hnorinewehpon/emmy-coming-soon1jenk:v2'
                 }
             } 
         }         
