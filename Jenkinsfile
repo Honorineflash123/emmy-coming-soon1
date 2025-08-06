@@ -24,7 +24,7 @@ pipeline {
         
         stage('Dockerizing') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'docker login -u $USERNAME -p $PASSWORD'
     // Your Docker commands using the environment variables
                     sh 'docker build -t emmy-coming-soon1jenk:v2.'
