@@ -27,7 +27,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'docker login -u $USERNAME -p $PASSWORD'
     // Your Docker commands using the environment variables
-                    sh 'docker build emmy-coming-soon1:v2'
+                    sh 'docker -t build emmy-coming-soon1:v2 .'
                     sh 'docker tag emmy-coming-soon1:v2 hnorinewehpon/emmy-coming-soon1:v2'
                     sh 'docker push hnorinewehpon/emmy-coming-soon1:v2'
                 }
